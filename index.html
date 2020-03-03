@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="/css/common.css">
 
 <title>Perlで学ぶデータサイエンス入門</title>
-<meta name="description" content="Perlで学ぶデータサイエンス入門.">
+<meta name="description" content="Perlで学ぶデータサイエンス入門です。ビジネスで頻繁に必要とされる簡単な計算・統計からスタートしましょう。">
   </head>
   <body>
     <div class="container">
@@ -31,93 +31,30 @@
   <div class="middle">
     <h2><a href="/">Perlで学ぶデータサイエンス入門</a></h2>
 <p>
-  Perlで学ぶデータサイエンス入門.
+  Perlで学ぶデータサイエンス入門です。ビジネスで頻繁に必要とされる簡単な計算・統計からスタートしましょう。
 </p>
-<h3>Create web site</h3>
+<h3>データサイエンスには専用のツールや、ライブラリが必要ですか?</h3>
 <p>
-  Create web site by new command.
+  データサイエンスには、専門のツールや、ライブラリが必要と誤解されている方も多いようです。
 </p>
-<pre>
-giblog new mysite
-</pre>
 <p>
-  Other prototypes is also available.
+  「データサイエンスにはPythonのnumpyが必要なんじゃないの?」
 </p>
-<pre>
-giblog new_website mysite
-giblog new_blog mysite
-</pre>
 <p>
-  After creating web site, change directory to mysite
+  Perlで学ぶデータサイエンス入門では、実例を紹介しながら、実際に、専用のツールやライブラリなしで、データサイエンスが可能なことを示します。
 </p>
-<pre>
-cd mysite
-</pre>
-<h3>Add new entry</h3>
 <p>
-  Add new entry by add command.
+  データサイエンスとして、合計、累積、平均、最大、最小、確率など求めるには、プログラミング言語の基本的な文法で可能です。
 </p>
-<pre>
-giblog add
-</pre>
-<h3>Build</h3>
 <p>
-  Build web site.
+  複数フィールドの並び替え、NaN値の除去、回帰分析など、統計処理でよく使われることも、プログラミングの基本的な文法で可能です。
 </p>
-<pre>
-giblog build
-</pre>
 <p>
-  If you want to customize build process, you open lib/Giblog/Command/Build.pm and edit run subroutine.
+  ピボットテーブルによる集計も、Perlの多次元データ構造を使えば、表現可能です。
 </p>
-<h3>Serve</h3>
 <p>
-  You can serve your web site by morbo command if you have Mojolicious.
+  唯一ライブラリが必要だとすれば、データを可視化する分野でしょう。このライブラリについても、近いうちに、紹介できればと思います。
 </p>
-<pre>
-morbo serve.pl
-</pre>
-<p>
-  build command is automatically executed after editting files in templates directory.
-</p>
-<h3>Examples</h3>
-<p>
-  Some examples.
-</p>
-<blockquote>
-  This is a quote.
-</blockquote>
-<div>
-  Hello
-</div>
-<h4>Sub header</h4>
-<pre>
-&lt;&gt;&lt;&gt;&lt;&gt;
-</pre>
-<pre>
-1 &gt; 2;
-1 &lt; 3;
-1 &amp; 3;
-</pre>
-<ul>
-  <li>Item1</li>
-  <li>Item2</li>
-  <li>Item3</li>
-</ul>
-<table>
-  <tr>
-    <th>Head1</th><th>Head2</th>
-  </tr>
-  <tr>
-    <td>Item1</td><td>Item2</td>
-  </tr>
-</table>
-<p>
-  <a href="https://github.com/yuki-kimoto/giblog">Giblog</a>
-</p>
-<div>
-  <img src="/images/giblog-logo.png">
-</div>
 
   </div>
   <div class="bottom">
