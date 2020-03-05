@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/images/giblog-logo.png">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+
+<title>小数点以下の金額を切り上げるPerlプログラム - Perlで学ぶデータサイエンス入門</title>
+<meta name="description" content="小数点以下の金額を切り上げるPerlプログラムを作成してみましょう。金額の割り算をしたときの端数処理に使えます。">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- header -->
+<div class="main">
+  <h1>
+    <a href="/">Perlで学ぶデータサイエンス入門</a>
+  </h1>
+</div>
+
+      </div>
+      <div class="main">
+        <div class="content">
+          <div class="entry">
+  <div class="top">
+    <!-- top -->
+
+  </div>
+  <div class="middle">
+    <h2><a href="/blog/20200301101834.html">小数点以下の金額を切り上げるPerlプログラム</a></h2>
+<p>
+  小数点以下の金額を切り上げるPerlプログラムを作成してみましょう。金額の割り算をしたときの端数処理に使えます。
+</p>
+<p>
+  たとえば、買主・売主の負担する金額の合計が9800円で買主の負担が「33/365」だったとしましょう。割り算をすると割り切れません。
+</p>
+<p>
+  このような場合に、小数点以下を、切り捨てるか、切り上げるかどちらの処理を選択しますが、今回は切り上げる場合を考えてみましょう。
+</p>
+<h3>小数点以下の金額を切り上げる</h3>
+<p>
+  小数点以下の金額を切り上げるには、<a href="https://tutorial.perlzemi.com/blog/20080923122214.html">int関数</a>を使用した後に、1を加えます。
+</p>
+<pre>
+use strict;
+use warnings;
+
+# 金額 (886.027397260274)
+my $price = 9800 * (33/365);
+
+# 小数点以下の金額を切り上げる(887)
+my $price_cut = int($price) + 1;
+
+# 結果を出力
+print "$price_cut\n";
+</pre>
+<p>
+  このプログラムは、コピー＆ペーストして、<a href="https://perlbanjo.com/">PerlBanjo</a>で、すぐに試すことができます。
+</p>
+<h3>価格がマイナスの場合にも切り上げるには?</h3>
+<p>
+  損失を意味する、マイナスの価格を使っている場合が、あるかもしれません。このような場合に、上記のプログラムを実行すると、切り下げられてしまいます。「-886.027397260274」は「-885」になります。
+</p>
+<p>
+  これは、望んでいる処理ではないはずです。以下に、価格がマイナスの場合にも、正しく動くプログラムを提示しておきます。
+</p>
+<p>
+  三項演算子を利用して、価格が0より大きい場合は、上記の処理を、価格が0より小さい場合は「-1」をしています。
+</p>
+<pre>
+use strict;
+use warnings;
+
+# 金額 (886.027397260274)
+my $price = -9800 * (33/365);
+
+# 小数点以下の金額を切り上げる(-887)
+my $price_cut = $price &gt; 0 ? int($price) + 1 : int($price) - 1;
+
+# 結果を出力
+print "$price_cut\n";
+</pre>
+<p>
+  このプログラムは、コピー＆ペーストして、<a href="https://perlbanjo.com/">PerlBanjo</a>で、すぐに試すことができます。
+</p>
+
+  </div>
+  <div class="bottom">
+    <!-- bottom -->
+
+  </div>
+</div>
+
+        </div>
+        <div class="side">
+          <!-- side -->
+<div class="side-list">
+  <div class="side-list-title">
+    Side Bar
+  </div>
+  <ul>
+    <li><a href="/list.html">Entries</a></li>
+    <li>Bar</li>
+    <li>Baz</li>
+  </ul>
+</div>
+
+        </div>
+      </div>
+      <div class="footer">
+        <!-- footer -->
+<a href="https://github.com/yuki-kimoto/giblog">Giblog</a>
+
+      </div>
+    </div>
+  </body>
+</html>
