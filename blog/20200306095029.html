@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/images/giblog-logo.png">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+
+<title>日割り計算を行うPerlプログラム - Perlで学ぶデータサイエンス入門</title>
+<meta name="description" content="日割り計算をPerlプログラムで行う方法を解説します。ビジネスで、お金の計算をするときに、日割り計算を行うことがよくあります。金利を、日割りで計算する。家を借りたときに、借りた日から月末までの分だけ支払うなどです。">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- header -->
+<div class="main">
+  <h1>
+    <a href="/">Perlで学ぶデータサイエンス入門</a>
+  </h1>
+</div>
+
+      </div>
+      <div class="main">
+        <div class="content">
+          <div class="entry">
+  <div class="top">
+    <!-- top -->
+
+  </div>
+  <div class="middle">
+    <h2><a href="/blog/20200306095029.html">日割り計算を行うPerlプログラム</a></h2>
+<p>
+  日割り計算をPerlプログラムで行う方法を解説します。ビジネスで、お金の計算をするときに、日割り計算を行うことがよくあります。金利を、日割りで計算する。家を借りたときに、借りた日から月末までの分だけ支払うなどです。
+</p>
+<h3>指定した日から、指定した日までの日数を求める</h3>
+<p>
+  指定した日から、指定した日までの日数を求めてみましょう。
+</p>
+<h4>2019年7月16日から2019年12月31日までの日数(うるう年ではない)</h4>
+<p>
+  2019年7月16日から2019年12月31日までの日数を求めてみましょう。この年は、うるう年ではないです。
+</p>
+<pre>
+use strict;
+use warnings;
+
+use Time::Piece;
+
+# 2019年7月16日の日付オブジェクト
+my $day1_tp = Time::Piece-&gt;strptime('2019-7-16', '%Y-%m-%d');
+
+# 2019年12月31日の日付オブジェクト
+my $day2_tp = Time::Piece-&gt;strptime('2019-12-31', '%Y-%m-%d');
+
+# 差を求める。差の情報を保存するTime::Secondsオブジェクトが返る。
+my $seconds = $day2_tp - $day1_tp;
+
+# daysで、日付の差が求まるので、1を加えると正しい日数になる
+my $days = $seconds-&gt;days + 1;
+
+print "$days\n";
+</pre>
+<p>
+  出力結果。
+</p>
+<pre>
+169
+</pre>
+<p>
+  <a href="https://tutorial.perlzemi.com/blog/20091105124627.html">Time::Piece</a>は、Perlに標準で添付(Perl 5.10以降)されている日付・時刻のためのモジュールです。
+</p>
+<p>
+  strptimeメソッドを使うと、指定日と日付のフォーマットを指定して、Time::Pieceオブジェクトを作成できます。
+</p>
+<p>
+  Time::Pieceオブジェクトは、引き算を行うことができ、Time::Pieceオブジェクトの差を表すTime::Secondsオブジェクトが返ります。
+</p>
+<p>
+  daysメソッドを使うと、日付の差が求まります。日付の差に1を加えると、1年の正しい日数になります。
+</p>
+<p>
+  まずこれで、年の日数を分母にして計算する場合の、1年の日数を求めることができました。
+</p>
+<h3>年の日数を求める</h3>
+<p>
+  年の日数を求めてみましょう。
+</p>
+<h4>年の日数を求める(うるう年ではない)</h4>
+<p>
+  年の日数を求めてみましょう。2019年1月1日から2019年12月31日までの日数です。この年は、うるう年ではないです。
+</p>
+<pre>
+use strict;
+use warnings;
+
+use Time::Piece;
+
+# 2019年1月1日の日付オブジェクト
+my $day1_tp = Time::Piece-&gt;strptime('2019-1-1', '%Y-%m-%d');
+
+# 2019年12月31日の日付オブジェクト
+my $day2_tp = Time::Piece-&gt;strptime('2019-12-31', '%Y-%m-%d');
+
+# 差を求める。差の情報を保存するTime::Secondsオブジェクトが返る。
+my $seconds = $day2_tp - $day1_tp;
+
+# daysで、日付の差が求まるので、1を加えると正しい日数になる
+my $days = $seconds-&gt;days + 1;
+
+print "$days\n";
+</pre>
+<p>
+  出力結果。
+</p>
+<pre>
+365
+</pre>
+<p>
+  年の日数が出力されました。
+</p>
+<h4>年の日数を求める(うるう年の場合)</h4>
+<p>
+  うるう年の場合の年の日数を求めみましょう。この年は、うるう年です。年だけ変えて、上記と全く同じ処理を書きます。
+</p>
+<pre>
+use strict;
+use warnings;
+
+use Time::Piece;
+
+# 2020年1月1日の日付オブジェクト
+my $day1_tp = Time::Piece-&gt;strptime('2020-1-1', '%Y-%m-%d');
+
+# 2020年12月31日の日付オブジェクト
+my $day2_tp = Time::Piece-&gt;strptime('2020-12-31', '%Y-%m-%d');
+
+# 差を求める。差の情報を保存するTime::Secondsオブジェクトが返る。
+my $seconds = $day2_tp - $day1_tp;
+
+# daysで、日付の差が求まるので、1を加えると正しい日数になる
+my $days = $seconds-&gt;days + 1;
+
+print "$days\n";
+</pre>
+<p>
+  出力結果。
+</p>
+<pre>
+366
+</pre>
+<p>
+  うるう年でも、正しい日数になっていますね。
+</p>
+<h4>月の日数を求める</h4>
+<p>
+  日付は、始まりは必ず1日ですが、終わりの日は、31日、30日、29日、28日の場合がありますね。このような場合にプログラムで自動的に求めるには、次のようにします。
+</p>
+<p>
+  まず、次の月の最初の日を取得します。2020年2月の日数を取得してみましょう。この年は、うるう年です。
+</p>
+<pre>
+use strict;
+use warnings;
+
+use Time::Piece;
+
+# 年
+my $year = 2020;
+
+# 月
+my $mon = 2;
+
+# 次の月
+my $mon_next = $mon + 1;
+
+# 次の月の最初の日のTime::Pieceオブジェクト
+my $next_mon_tp = Time::Piece-&gt;strptime("$year-$mon_next-1", '%Y-%m-%d');
+
+# 1秒引くと、前月の最後の日の情報が得られる
+my $this_mon_last_tp = $next_mon_tp - 1;
+
+# 最後の日を取得。これは月数と同じ値。
+my $this_mon_days_count = $this_mon_last_tp-&gt;mday;
+
+print "$this_mon_days_count\n";
+</pre>
+<p>
+  出力結果。
+</p>
+<pre>
+29
+</pre>
+<p>
+  うるう年の2月の日数になっていますね。
+</p>
+<h3>年の日数、月の日数、ある日からある日までの日数がわかればOK</h3>
+<p>
+  年の日数、月の日数、ある日からある日までの日数がわかれば日割り計算はできますね。
+</p>
+<pre>
+日割り金額 = 金額 * (日数 / 年あるいは月の日数)
+</pre>
+<h4>初月の家賃を求めるプログラムサンプル</h4>
+<p>
+  初月の家賃を求めるプログラムサンプルです。月額79000円で、2020年6月18日に、引き渡した場合の、初月の家賃です。
+</p>
+<pre>
+use strict;
+use warnings;
+
+use Time::Piece;
+
+# 家賃
+my $yatin = 79_000;
+
+# 年
+my $year = 2020;
+
+# 月
+my $mon = 6;
+
+# 開始日
+my $start_mday = 18;
+
+# 次の月
+my $mon_next = $mon + 1;
+
+# 次の月の最初の日のTime::Pieceオブジェクト
+my $next_mon_tp = Time::Piece-&gt;strptime("$year-$mon_next-1", '%Y-%m-%d');
+
+# 1秒引くと、前月の最後の日の情報が得られる
+my $this_mon_last_tp = $next_mon_tp - 1;
+
+# 最後の日を取得。これは月数と同じ値。
+my $this_mon_days_count = $this_mon_last_tp-&gt;mday;
+
+# 2020年6月19日の日付オブジェクト
+my $day1_tp = Time::Piece-&gt;strptime("2020-6-$start_mday", '%Y-%m-%d');
+
+# 2020年12月31日の日付オブジェクト
+my $day2_tp = Time::Piece-&gt;strptime("2020-6-$this_mon_days_count", '%Y-%m-%d');
+
+# 差を求める。差の情報を保存するTime::Secondsオブジェクトが返る。
+my $seconds = $day2_tp - $day1_tp;
+
+# 日数
+my $days_count = $seconds-&gt;days + 1;
+
+# 日割り家賃
+my $hiwari_yatin = $yatin * ($days_count / $this_mon_days_count);
+
+# 小数点切り捨て
+my $hiwari_yatin_cut = int $hiwari_yatin;
+
+print "$hiwari_yatin_cut\n";
+</pre>
+<p>
+  出力結果。
+</p>
+<pre>
+34233
+</pre>
+<p>
+  初月家賃は「34,233円」となりました。
+</p>
+<p>
+  日割り計算をした後、最後に<a href="/blog/20200305122658.html">小数点を切り捨て</a>ています。
+</p>
+<p>
+  このプログラムは、コピー＆ペーストして、<a href="https://perlbanjo.com/">PerlBanjo</a>で、すぐに試すことができます。
+</p>
+
+  </div>
+  <div class="bottom">
+    <!-- bottom -->
+
+  </div>
+</div>
+
+        </div>
+        <div class="side">
+          <!-- side -->
+<div class="side-list">
+  <div class="side-list-title">
+    Side Bar
+  </div>
+  <ul>
+    <li><a href="/list.html">Entries</a></li>
+    <li>Bar</li>
+    <li>Baz</li>
+  </ul>
+</div>
+
+        </div>
+      </div>
+      <div class="footer">
+        <!-- footer -->
+<a href="https://github.com/yuki-kimoto/giblog">Giblog</a>
+
+      </div>
+    </div>
+  </body>
+</html>
