@@ -7,8 +7,8 @@
 <link rel="icon" type="image/x-icon" href="/images/datasience_logo.png">
 <link rel="stylesheet" type="text/css" href="/css/common.css">
 
-<title>最大値を求めてみよう - Perlで学ぶデータサイエンス入門</title>
-<meta name="description" content="最大値を求める方法をPerlプログラムを用いて説明します。">
+<title>最小値を求めてみよう - Perlで学ぶデータサイエンス入門</title>
+<meta name="description" content="最小値を求める方法をPerlプログラムを用いて説明します。">
   </head>
   <body>
     <div class="container">
@@ -29,55 +29,61 @@
 
   </div>
   <div class="middle">
-    <h2><a href="/blog/20200328191109.html">最大値を求めてみよう</a></h2>
+    <h2><a href="/blog/20200531164942.html">最小値を求めてみよう</a></h2>
 <p>
-  最大値を求める方法をPerlプログラムを用いて説明します。
+  最小値を求める方法をPerlプログラムを用いて説明します。
 </p>
-<h3>配列の最大値を求めてみよう。</h3>
+<h3>配列の最小値を求めてみよう。</h3>
 <p>
-  以下のような正の数(>0)のみが含まれる配列を考えてみます。
+  以下のような1~10までの正の数のみが含まれる配列を考えてみます。
 </p>
 <pre>
-@array = (1, 8, 3, 5, 7);
+my @array = (8, 1, 3, 5, 7);
 </pre>
-<h4>配列の最大値を求めるサンプルプログラム</h4>
+<h4>配列の最小値を求めるサンプルプログラム</h4>
 <p>
-  実際に配列から最大値を求めます。<a href="https://tutorial.perlzemi.com/blog/20080114120030.html">List::Utilモジュール</a>にmax関数がありますが、この例では利用しません。
+  実際に配列から最小値を求めます。<a href="https://tutorial.perlzemi.com/blog/20080114120030.html">List::Utilモジュール</a>にmin関数がありますが、この例では利用しません。
 </p>
 <p>
-  最大値を保存するための変数を用意し、配列の要素と1つずつ比較することで最大値を求められます。
+  最小値を保存するための変数を用意し、配列の要素と1つずつ比較することで最小値を求められます。
+</p>
+<p>
+  ※最小値を保存する変数の初期値は、あらかじめ1~10の数値と比較する条件にしているため、十分に大きい99を初期値に設定しています。
+</p>
+<p>
+  比較する数値の範囲がわからない場合は、工夫をして比較する必要があります。
 </p>
 <pre>
 use strict;
 use warnings;
 
-my @array = (1, 8, 3, 5, 7); 
+my @array = (8, 1, 3, 5, 7); 
 
-my $max = 0;
+my $min = 99;
 
 for my $num (@array) {
-  if ($max &lt; $num) {
-    $max = $num;
+  if ($min &gt; $num) {
+    $min = $num;
   }
 }
 
-print "$max\n";
+print "$min\n";
 </pre>
 <p>
   実行結果
 </p>
 <pre>
-8
+1
 </pre>
 <p>
   1つ1つ比較していて処理がとてもわかりやすいかと思います。
 </p>
 <p>
-  ※コードを単純化するために正の数(>0)のみが含まれる配列を扱います。
+  ※コードを単純化するために1~10までの正の数のみが含まれる配列を扱います。
 </p>
-<h3>表形式のデータから、特定の列の最大値を求めてみよう。</h3>
+<h3>表形式のデータから、特定の列の最小値を求めてみよう。</h3>
 <p>
-  以下のデータを考えてみましょう。
+  最大値を求める際にも使った以下のデータを考えてみましょう。
 </p>
 <table> 
   <thead>
@@ -99,7 +105,7 @@ $array_ref = [
   {name =&gt; 'alice',age =&gt; 11}
 ];
 </pre>
-<h4>age列の最大値を求めるサンプルプログラム</h4>
+<h4>age列の最小値を求めるサンプルプログラム</h4>
 <p>
   参照するデータが複雑になったためデータアクセスも少し難しくなりましたが、
 </p>
@@ -116,21 +122,21 @@ my $array_ref = [
   {name =&gt; 'alice',age =&gt; 11}
 ];
 
-my $max = 0;
+my $min = 99;
 
 for my $info (@{$array_ref}) {
-  if ($max &lt; $info-&gt;{'age'}) {
-    $max = $info-&gt;{'age'};
+  if ($min &gt; $info-&gt;{'age'}) {
+    $min = $info-&gt;{'age'};
   }
 }
 
-print "$max\n";
+print "$min\n";
 </pre>
 <p>
   実行結果
 </p>
 <pre>
-14
+9
 </pre>
 <p>
   リファレンスを扱った以外は先ほどと同じ処理になります。
