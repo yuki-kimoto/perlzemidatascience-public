@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/images/datasience_logo.png">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+
+<title>平均値を求めてみよう - Perlで学ぶデータサイエンス入門</title>
+<meta name="description" content="平均値を求める方法をPerlプログラムを用いて説明します。">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- header -->
+<div class="main">
+  <h1>
+    <a href="/">Perlで学ぶデータサイエンス入門</a>
+  </h1>
+</div>
+
+      </div>
+      <div class="main">
+        <div class="content">
+          <div class="entry">
+  <div class="top">
+    <!-- top -->
+
+  </div>
+  <div class="middle">
+    <h2><a href="/blog/20200607185224.html">平均値を求めてみよう</a></h2>
+<p>
+  平均値を求める方法をPerlプログラムを用いて説明します。
+</p>
+<h3>配列の平均値を求めてみよう。</h3>
+<p>
+  以下のような配列を考えてみます。
+</p>
+<pre>
+my @array = (8, 1, 4, 5, 7);
+</pre>
+<h4>配列の平均値を求めるサンプルプログラム</h4>
+<p>
+  実際に配列から平均値を求めます。<a href="https://metacpan.org/pod/Statistics::Lite">Statistics::Liteモジュール</a>にmean関数がありますが、この例では利用しません。
+</p>
+<p>
+  今まで紹介していた<a href="https://metacpan.org/pod/List::Util">List::Utilモジュール</a>には平均値を求める関数はありません。
+</p>
+<p>
+  平均値はすべてのデータの値を足し、データの個数で割ることで求めることができます。
+</p>
+<pre>
+use strict;
+use warnings;
+
+my @array = (8, 1, 4, 5, 7); 
+my $array_cnt = @array; # データの個数を求めています。
+
+my $sum = 0;
+my $avg = 0;
+
+for my $num (@array) {
+    $sum += $num;
+}
+$avg = $sum / $array_cnt;
+
+print "$avg\n";
+</pre>
+<p>
+  実行結果
+</p>
+<pre>
+5
+</pre>
+<p>
+  すべてのデータを一つずつ足していき、最後にデータの個数で割っています。
+</p>
+<p>
+  平均値を求めるデータが配列の場合は" @配列名 "とすることでデータの個数(要素数)を取得できます。
+</p>
+<h3>表形式のデータから、特定の列の平均値を求めてみよう。</h3>
+<p>
+  以下のデータを考えてみましょう。
+</p>
+<table> 
+  <thead>
+    <tr><th>name</th><th>age</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>bob</th><th>9</th></tr>
+    <tr><th>tom</th><th>13</th></tr>
+    <tr><th>alice</th><th>11</th></tr>
+  </tbody>
+</table>
+<p>
+  配列,ハッシュのリファレンスで表すと以下のようになります。
+</p>
+<pre>
+$array_ref = [
+  {name =&gt; 'bob',  age =&gt; 9},
+  {name =&gt; 'tom',  age =&gt; 13},
+  {name =&gt; 'alice',age =&gt; 11}
+];
+</pre>
+<h4>age列の平均値を求めるサンプルプログラム</h4>
+<p>
+  参照するデータが複雑になったためデータアクセスも少し難しくなりましたが、
+</p>
+<p>
+  チェックする方法は先ほどと同じです。
+</p>
+<pre>
+use strict;
+use warnings;
+
+my $array_ref = [
+  {name =&gt; 'bob', age =&gt; 9},
+  {name =&gt; 'tom', age =&gt; 13},
+  {name =&gt; 'alice',age =&gt; 11}
+];
+
+my $array_cnt = 0;
+my $sum = 0;
+my $avg = 0;
+
+for my $info (@{$array_ref}) {
+    $sum += $info-&gt;{'age'};
+    $array_cnt += 1;
+}
+$avg = $sum / $array_cnt;
+
+print "$avg\n";
+</pre>
+<p>
+  実行結果
+</p>
+<pre>
+11
+</pre>
+<p>
+  リファレンスを扱った以外は先ほどと同じ処理になります。
+</p>
+<p>
+  データの個数はデータを足した分だけカウントすることで求めています。
+</p>
+<p>
+  今回は配列リファレンスのため、データの個数については以下のようにデリファレンスし求めることもできます。
+</p>
+<pre>
+my $array_cnt = @{$array_cnt};
+</pre>
+<p>
+  このプログラムは、コピー＆ペーストして、<a href="https://perlbanjo.com">PerlBanjo</a>で、すぐに試すことができます。
+</p>
+
+  </div>
+  <div class="bottom">
+    <!-- bottom -->
+
+  </div>
+</div>
+
+        </div>
+        <div class="side">
+          <!-- side -->
+<div class="side-list">
+  <div class="side-list-title">
+    コンテンツ
+  </div>
+  <ul>
+    <li><a href="/list.html">新着情報</a></li>
+  </ul>
+</div>
+
+        </div>
+      </div>
+      <div class="footer">
+        <div class="kimoto_system_link">
+  <a href="https://kimoto-system.co.jp">
+    <img src="https://kimoto-system.co.jp/images/kimoto-system-logo.png" alt="Perl Webシステム開発">
+    Perl Webシステム開発の木本システム
+  </a>
+</div>
+
+<div class="copyright">
+  Copyright © Yuki Kimoto
+</div>
+
+      </div>
+    </div>
+  </body>
+</html>
