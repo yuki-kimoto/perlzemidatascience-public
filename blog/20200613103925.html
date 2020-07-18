@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/images/datasience_logo.png">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+
+<title>中央値を求めてみよう - Perlで学ぶデータサイエンス入門</title>
+<meta name="description" content="中央値を求める方法をPerlプログラムを用いて説明します。">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- header -->
+<div class="main">
+  <h1>
+    <a href="/">Perlで学ぶデータサイエンス入門</a>
+  </h1>
+</div>
+
+      </div>
+      <div class="main">
+        <div class="content">
+          <div class="entry">
+  <div class="top">
+    <!-- top -->
+
+  </div>
+  <div class="middle">
+    <h2><a href="/blog/20200613103925.html">中央値を求めてみよう</a></h2>
+<p>
+  中央値を求める方法をPerlプログラムを用いて説明します。
+</p>
+<h3>配列の中央値を求めてみよう。</h3>
+<p>
+  以下のような配列を考えてみます。
+</p>
+<pre>
+my @array1 = (1, 4, 5, 7, 8);
+my @array2 = (1, 4, 5, 7, 8, 12);
+</pre>
+<h4>配列の中央値を求めるサンプルプログラム</h4>
+<p>
+  実際に配列から中央値を求めます。<a href="https://metacpan.org/pod/Statistics::Lite">Statistics::Liteモジュール</a>にmedian関数がありますが、この例では利用しません。
+</p>
+<p>
+  中央値は要素数が奇数の場合は要素の中央にある値となり、偶数の場合は中央にある2つの値の平均を中央値として求めることができます。
+</p>
+<p>
+  ※コードの簡略化のため、ソート済みのデータを使用します。
+</p>
+<pre>
+use strict;
+use warnings;
+
+my @array1 = (1, 4, 5, 7, 8); 
+my @array2 = (1, 4, 5, 7, 8, 12); 
+my $median = 0;
+
+sub get_median {
+    my ($array_ref) = @_;
+    my $array_cnt = @$array_ref;
+    my $ret_median = 0;
+
+    my $median_pos = int($array_cnt / 2);
+    if ( $array_cnt % 2 == 1) {
+        $ret_median = $array1[$median_pos];
+    } else {
+        my $median_pos2 = $median_pos - 1;
+        $ret_median = ($array1[$median_pos] + $array1[$median_pos2]) / 2;
+    }
+	return $ret_median;
+}
+
+$median = get_median(\@array1);
+print "array1の中央値は:" . "$median" . "\n";
+
+$median = get_median(\@array2);
+print "array2の中央値は:" . "$median" . "\n";
+</pre>
+<p>
+  実行結果
+</p>
+<pre>
+array1の中央値は:5
+array2の中央値は:6
+</pre>
+<p>
+  最大値、最小値などのように値の比較を行う必要がなく、要素の配列の中央の要素を取得できます。
+</p>
+<h3>表形式のデータから、特定の列の中央値を求めてみよう。</h3>
+<p>
+  以下のデータを考えてみましょう。
+</p>
+<table> 
+  <thead>
+    <tr><th>name</th><th>age</th></tr>
+  </thead>
+  <tbody>
+    <tr><th>bob</th><th>9</th></tr>
+    <tr><th>alice</th><th>11</th></tr>
+    <tr><th>tom</th><th>13</th></tr>
+  </tbody>
+</table>
+<p>
+  配列,ハッシュのリファレンスで表すと以下のようになります。
+</p>
+<pre>
+$array_ref1 = [
+  {name =&gt; 'bob',  age =&gt; 9},
+  {name =&gt; 'alice',age =&gt; 11},
+  {name =&gt; 'tom',  age =&gt; 13}
+];
+</pre>
+<h4>age列の中央値を求めるサンプルプログラム</h4>
+<p>
+  参照するデータが複雑になったためデータアクセスも少し難しくなりましたが、
+</p>
+<p>
+  チェックする方法は先ほどと同じです。
+</p>
+<p>
+  ※偶数パターンも入れるため$array_ref2も追加しています。
+</p>
+<pre>
+use strict;
+use warnings;
+use Data::Dumper;
+
+my $array_ref1 = [
+  {name =&gt; 'bob', age =&gt; 9},
+  {name =&gt; 'alice',age =&gt; 11},
+  {name =&gt; 'tom', age =&gt; 13}
+];
+
+my $array_ref2 = [
+  {name =&gt; 'bob', age =&gt; 9},
+  {name =&gt; 'alice',age =&gt; 11},
+  {name =&gt; 'tom', age =&gt; 13},
+  {name =&gt; 'carol', age =&gt; 15}
+];
+
+my $median = 0;
+
+sub get_median {
+    my ($array_ref) = @_;
+    my $array_cnt = @$array_ref;
+    my $median_pos = int($array_cnt / 2);
+    my $ret_median = 0;
+
+    if ( $array_cnt % 2 == 1) {
+	    $ret_median = $array_ref-&gt;[$median_pos]-&gt;{'age'};
+    } else {
+        my $median_pos2 = $median_pos - 1;
+        my $value1 = $array_ref-&gt;[$median_pos]-&gt;{'age'};
+        my $value2 = $array_ref-&gt;[$median_pos2]-&gt;{'age'};
+       
+        $ret_median = ($value1 + $value2) / 2;
+    }
+    return $ret_median;
+}
+
+$median = get_median(\@$array_ref1);
+print "array_ref1の中央値は:" . "$median" . "\n";
+
+$median = get_median(\@$array_ref2);
+print "array_ref2の中央値は:" . "$median" . "\n";
+</pre>
+<p>
+  実行結果
+</p>
+<pre>
+array_ref1の中央値は:11
+array_ref2の中央値は:12
+</pre>
+<p>
+  リファレンスを扱った以外は先ほどと同じ処理になります。
+</p>
+<p>
+  このプログラムは、コピー＆ペーストして、<a href="https://perlbanjo.com">PerlBanjo</a>で、すぐに試すことができます。
+</p>
+
+  </div>
+  <div class="bottom">
+    <!-- bottom -->
+
+  </div>
+</div>
+
+        </div>
+        <div class="side">
+          <!-- side -->
+<div class="side-list">
+  <div class="side-list-title">
+    コンテンツ
+  </div>
+  <ul>
+    <li><a href="/list.html">新着情報</a></li>
+  </ul>
+</div>
+
+        </div>
+      </div>
+      <div class="footer">
+        <div class="kimoto_system_link">
+  <a href="https://kimoto-system.co.jp">
+    <img src="https://kimoto-system.co.jp/images/kimoto-system-logo.png" alt="Perl Webシステム開発">
+    Perl Webシステム開発の木本システム
+  </a>
+</div>
+
+<div class="copyright">
+  Copyright © Yuki Kimoto
+</div>
+
+      </div>
+    </div>
+  </body>
+</html>
