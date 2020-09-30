@@ -7,8 +7,8 @@
 <link rel="icon" type="image/x-icon" href="/images/datasience_logo.png">
 <link rel="stylesheet" type="text/css" href="/css/common.css">
 
-<title>SQLで最大最小平均値を求めてみよう - Perlで学ぶビジネスデータ分析</title>
-<meta name="description" content="MariaDB [none]> create database kimotosystem;">
+<title>SQLで最大最・最小値・平均値を求めてみよう - Perlで学ぶビジネスデータ分析</title>
+<meta name="description" content="SQLで最大値・最小値・平均値を求めてみましょう。テーブルを作成し、データを挿入し、SQLで最大値・最小値・平均値を求めています。">
   </head>
   <body>
     <div class="container">
@@ -29,142 +29,83 @@
 
   </div>
   <div class="middle">
-    <h2><a href="/blog/20200926125437.html">SQLで最大最小平均値を求めてみよう</a></h2>
+    <h2><a href="/blog/20200926125437.html">SQLで最大最・最小値・平均値を求めてみよう</a></h2>
 <p>
-  MariaDB [none]> create database kimotosystem;
+  SQLで最大値・最小値・平均値を求めてみましょう。テーブルを作成し、データを挿入し、SQLで最大値・最小値・平均値を求めています。
 </p>
+<h3>データベースを作成</h3>
 <p>
-  MariaDB [kimotosystem]> use kimotosystem;
+  データベースがない場合は<a href="https://mariadb.perlzemi.com/blog/20200521082643.html">create database文でデータベースを作成</a>しましょう。
 </p>
+<pre>
+MariaDB [none]&gt; create database kimotosystem;
+
+MariaDB [kimotosystem]&gt; use kimotosystem;
+
+MariaDB [kimotosystem]&gt; show tables;
++-----------------+
+| Tables_in_kimotosystem |
++-----------------+
+| book            |
++-----------------+
+1 row in set (0.01 sec)
+</pre>
+<h3>テーブルの作成</h3>
 <p>
-  MariaDB [kimotosystem]> show tables;
+  <a href="https://mariadb.perlzemi.com/blog/20200218150054.html">create table文を使ってテーブルを作成</a>します。テーブル名はbookです。IDと書名と価格のデータです。
 </p>
+<pre>
+MariaDB [kimotosystem]&gt; 
+MariaDB [kimotosystem]&gt; 
+MariaDB [kimotosystem]&gt; create table kimotosystem.book(id int AUTO_INCREMENT PRIMARY KEY,name varchar(10), price int);
+Query OK, 0 rows affected (0.01 sec)
+
+MariaDB [itodb]&gt; desc book;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(10) | YES  |     | NULL    |                |
+| price | int(11)     | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+</pre>
+<h3>データの挿入</h3>
 <p>
-  +-----------------+
+  書籍のデータをSQLのinsert文を使って挿入します。
 </p>
+<pre>
+MariaDB [kimotosystem]&gt; insert into kimotosystem.book (name,price) values ('book A',800),('book B', 1000),('book C', 1500),('book D', 2500),('book E',2800),('book F',3500),('book G',4000);
+Query OK, 7 rows affected (0.01 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+MariaDB [kimotosystem]&gt; select * from kimotosystem.book;
++----+--------+-------+
+| id | name   | price |
++----+--------+-------+
+|  1 | book A |   800 |
+|  2 | book B |  1000 |
+|  3 | book C |  1500 |
+|  4 | book D |  2500 |
+|  5 | book E |  2800 |
+|  6 | book F |  3500 |
+|  7 | book G |  4000 |
++----+--------+-------+
+7 rows in set (0.01 sec)
+</pre>
+<h3>SQLで最大値・最小値・平均値を求める</h3>
 <p>
-  | Tables_in_kimotosystem |
+  select文と集合演算を使って、最大値・最小値・平均値を求めます。
 </p>
-<p>
-  +-----------------+
-</p>
-<p>
-  | book            |
-</p>
-<p>
-  +-----------------+
-</p>
-<p>
-  1 row in set (0.01 sec)
-</p>
-<p>
-  MariaDB [kimotosystem]> 
-</p>
-<p>
-  MariaDB [kimotosystem]> 
-</p>
-<p>
-  MariaDB [kimotosystem]> create table kimotosystem.book(id int AUTO_INCREMENT PRIMARY KEY,name varchar(10), price int);
-</p>
-<p>
-  Query OK, 0 rows affected (0.01 sec)
-</p>
-<p>
-  MariaDB [itodb]> desc book;
-</p>
-<p>
-  +-------+-------------+------+-----+---------+----------------+
-</p>
-<p>
-  | Field | Type        | Null | Key | Default | Extra          |
-</p>
-<p>
-  +-------+-------------+------+-----+---------+----------------+
-</p>
-<p>
-  | id    | int(11)     | NO   | PRI | NULL    | auto_increment |
-</p>
-<p>
-  | name  | varchar(10) | YES  |     | NULL    |                |
-</p>
-<p>
-  | price | int(11)     | YES  |     | NULL    |                |
-</p>
-<p>
-  +-------+-------------+------+-----+---------+----------------+
-</p>
-<p>
-  3 rows in set (0.00 sec)
-</p>
-<p>
-  MariaDB [kimotosystem]> insert into kimotosystem.book (name,price) values ('book A',800),('book B', 1000),('book C', 1500),('book D', 2500),('book E',2800),('book F',3500),('book G',4000);
-</p>
-<p>
-  Query OK, 7 rows affected (0.01 sec)
-</p>
-<p>
-  Records: 7  Duplicates: 0  Warnings: 0
-</p>
-<p>
-  MariaDB [kimotosystem]> select * from kimotosystem.book;
-</p>
-<p>
-  +----+--------+-------+
-</p>
-<p>
-  | id | name   | price |
-</p>
-<p>
-  +----+--------+-------+
-</p>
-<p>
-  |  1 | book A |   800 |
-</p>
-<p>
-  |  2 | book B |  1000 |
-</p>
-<p>
-  |  3 | book C |  1500 |
-</p>
-<p>
-  |  4 | book D |  2500 |
-</p>
-<p>
-  |  5 | book E |  2800 |
-</p>
-<p>
-  |  6 | book F |  3500 |
-</p>
-<p>
-  |  7 | book G |  4000 |
-</p>
-<p>
-  +----+--------+-------+
-</p>
-<p>
-  7 rows in set (0.01 sec)
-</p>
-<p>
-  MariaDB [kimotosystem]> select max(price), min(price),avg(price) from kimotosystem.book;
-</p>
-<p>
-  +------------+------------+------------+
-</p>
-<p>
-  | max(price) | min(price) | avg(price) |
-</p>
-<p>
-  +------------+------------+------------+
-</p>
-<p>
-  |       4000 |        800 |  2300.0000 |
-</p>
-<p>
-  +------------+------------+------------+
-</p>
-<p>
-  1 row in set (0.00 sec)
-</p>
+<pre>
+MariaDB [kimotosystem]&gt; select max(price), min(price),avg(price) from kimotosystem.book;
++------------+------------+------------+
+| max(price) | min(price) | avg(price) |
++------------+------------+------------+
+|       4000 |        800 |  2300.0000 |
++------------+------------+------------+
+1 row in set (0.00 sec)
+</pre>
 
   </div>
   <div class="bottom">
