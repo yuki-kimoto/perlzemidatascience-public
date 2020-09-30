@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/images/datasience_logo.png">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+
+<title>標準偏差を求めてみよう - Perlで学ぶビジネスデータ分析</title>
+<meta name="description" content="標準偏差を求める方法をPerlプログラムを用いて説明します。">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- header -->
+<div class="main">
+  <h1>
+    <a href="/">Perlで学ぶビジネスデータ分析</a>
+  </h1>
+</div>
+
+      </div>
+      <div class="main">
+        <div class="content">
+          <div class="entry">
+  <div class="top">
+    <!-- top -->
+
+  </div>
+  <div class="middle">
+    <h2><a href="/blog/20200906145759.html">標準偏差を求めてみよう</a></h2>
+<p>
+  標準偏差を求める方法をPerlプログラムを用いて説明します。
+</p>
+<h3>標準偏差を求める</h3>
+<p>
+  以下のような配列を考えてみます。
+</p>
+<pre>
+my @array = (10, 50, 60, 65, 70, 90);
+</pre>
+<h4>配列の標準偏差を求めるサンプルプログラム</h4>
+<p>
+  実際に配列から標準偏差を求めます。<a href="https://metacpan.org/pod/Statistics::Lite">Statistics::Liteモジュール</a>にstddev関数がありますが、この例では利用しません。
+</p>
+<p>
+  標準偏差の求め方の説明はしません。
+</p>
+<pre>
+use strict;
+use warnings;
+
+sub get_stddev {
+  return sqrt(get_disp(@_));
+}
+
+sub get_disp {
+  my ($array_ref) = @_;
+  my $mean = get_avg($array_ref);
+  my $count = @$array_ref;
+  my $sum = 0;
+  
+  for my $num (@$array_ref) {
+      $sum += (($num - $mean) ** 2);
+  }
+  return $sum / $count;
+}
+
+sub get_avg {
+  my ($array_ref) = @_;
+  my $count = @$array_ref;
+  my $sum = 0;
+  for my $num (@$array_ref) {
+      $sum += $num;
+  }
+  return $sum / $count;
+}
+
+my @array = (10, 50, 60, 65, 70, 90);
+my $stddev = get_stddev(\@array);
+print "標準偏差は、" . $stddev . "です。\n";
+</pre>
+<p>
+  実行結果
+</p>
+<pre>
+標準偏差は、24.452334585202です。
+</pre>
+<p>
+  このプログラムは、コピー＆ペーストして、<a href="https://perlbanjo.com">PerlBanjo</a>で、すぐに試すことができます。
+</p>
+
+  </div>
+  <div class="bottom">
+    <!-- bottom -->
+
+  </div>
+</div>
+
+        </div>
+        <div class="side">
+          <!-- side -->
+<div class="side-list">
+  <div class="side-list-title">
+    コンテンツ
+  </div>
+  <ul>
+    <li><a href="/list.html">新着情報</a></li>
+  </ul>
+</div>
+
+        </div>
+      </div>
+      <div class="footer">
+        <div class="kimoto_system_link">
+  <a href="https://kimoto-system.co.jp">
+    <img src="https://kimoto-system.co.jp/images/kimoto-system-logo.png" alt="Perl Webシステム開発">
+    Perl Webシステム開発の木本システム
+  </a>
+</div>
+
+<div class="copyright">
+  Copyright © Yuki Kimoto
+</div>
+
+      </div>
+    </div>
+  </body>
+</html>
