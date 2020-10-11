@@ -39,7 +39,7 @@
 </p>
 <pre>
 my @array1 = (1, 4, 5, 7, 8);
-my @array2 = (1, 4, 5, 7, 8, 12);
+my @array2 = (1, 4, 6, 8, 9, 12);
 </pre>
 <h4>配列の中央値を求めるサンプルプログラム</h4>
 <p>
@@ -56,7 +56,7 @@ use strict;
 use warnings;
 
 my @array1 = (1, 4, 5, 7, 8); 
-my @array2 = (1, 4, 5, 7, 8, 12); 
+my @array2 = (1, 4, 6, 8, 9, 12); 
 my $median = 0;
 
 sub get_median {
@@ -66,10 +66,10 @@ sub get_median {
 
     my $median_pos = int($array_cnt / 2);
     if ( $array_cnt % 2 == 1) {
-        $ret_median = $array1[$median_pos];
+        $ret_median = @$array_ref[$median_pos];
     } else {
         my $median_pos2 = $median_pos - 1;
-        $ret_median = ($array1[$median_pos] + $array1[$median_pos2]) / 2;
+        $ret_median = (@$array_ref[$median_pos] + @$array_ref[$median_pos2]) / 2;
     }
 	return $ret_median;
 }
@@ -85,7 +85,7 @@ print "array2の中央値は:" . "$median" . "\n";
 </p>
 <pre>
 array1の中央値は:5
-array2の中央値は:6
+array2の中央値は:7
 </pre>
 <p>
   最大値、最小値などのように値の比較を行う必要がなく、要素の配列の中央の要素を取得できます。
