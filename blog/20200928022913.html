@@ -42,14 +42,13 @@ my $dbh = DBI-&gt;connect(
   "DBI:mysql:kimotosystem:localhost",
   "kimoto",
   "kimoto"
-) or die "cannot connect to MySWL: $DBI::errstr";
+) or die "cannot connect to MySQL: $DBI::errstr";
 
-my $sth = $dbh-&gt;prepare("SELECT min(price), max(price),avg(price) FROM kimotosystem.book;");
+my $sth = $dbh-&gt;prepare("SELECT min(price), max(price), avg(price) FROM kimotosystem.book;");
 $sth-&gt;execute();
 
-my $ary_ref = $sth-&gt;fetchrow_arrayref;
-my ($min, $max, $avg) = @$ary_ref;
-print "min=$min, max=$max, avg=$avg\n";
+my $hash_ref = $sth-&gt;fetchrow_hashref;
+print "min=$hash_ref-&gt;{'min(price)'}, max=$hash_ref-&gt;{'max(price)'}, avg=$hash_ref-&gt;{'avg(price)'}\n";
 
 $sth-&gt;finish;
 $dbh-&gt;disconnect;
