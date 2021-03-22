@@ -121,6 +121,9 @@ set style fill solid
 unset key
 set title '年別の売り上げ額'
 set ylabel '(円)'
+# 以下数値の桁区切り
+set format "%'.0f"
+set decimalsign locale; set decimalsign "."
 
 plot [][0:] 'sample-box.dat' using 1:3:xtic(2) with boxes
 </pre>
