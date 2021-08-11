@@ -7,8 +7,8 @@
 <link rel="icon" type="image/x-icon" href="/images/datasience_logo.png">
 <link rel="stylesheet" type="text/css" href="/css/common.css">
 
-<title>最大値を求めてみよう - Perlで学ぶビジネスデータ分析</title>
-<meta name="description" content="最大値を求める方法をPerlプログラムを用いて説明します。">
+<title>gnuplotで折れ線グラフを作ってみよう - Perlで学ぶビジネスデータ分析</title>
+<meta name="description" content="gnuplotを使って折れ線グラフを作成し、画像ファイルとして保存します。以下のグラフの作成を目標にします。">
   </head>
   <body>
     <div class="container">
@@ -33,114 +33,62 @@
 
   </div>
   <div class="middle">
-    <h2><a href="/blog/20200328191109.html">最大値を求めてみよう</a></h2>
+    <h2><a href="/blog/20210325002411.html">gnuplotで折れ線グラフを作ってみよう</a></h2>
 <p>
-  最大値を求める方法をPerlプログラムを用いて説明します。
-</p>
-<h3>配列の最大値を求めてみよう。</h3>
-<p>
-  以下のような正の数(>0)のみが含まれる配列を考えてみます。
-</p>
-<pre>
-@array = (1, 8, 3, 5, 7);
-</pre>
-<h4>配列の最大値を求めるサンプルプログラム</h4>
-<p>
-  実際に配列から最大値を求めます。<a href="https://tutorial.perlzemi.com/blog/20080114120030.html">List::Utilモジュール</a>にmax関数がありますが、この例では利用しません。
+  gnuplotを使って折れ線グラフを作成し、画像ファイルとして保存します。以下のグラフの作成を目標にします。
 </p>
 <p>
-  最大値を保存するための変数を用意し、配列の要素と1つずつ比較することで最大値を求められます。
+  <img src="/images/chart/20210325002411_1.png" />
 </p>
-<pre>
-use strict;
-use warnings;
-
-my @array = (1, 8, 3, 5, 7); 
-
-my $max = 0;
-
-for my $num (@array) {
-  if ($max &lt; $num) {
-    $max = $num;
-  }
-}
-
-print "$max\n";
-</pre>
+<h3>gnuplotを準備する</h3>
 <p>
-  実行結果
+  MacではHomebrewを使うことで簡単にインストールすることができます。
+</p>
+<p>
+  インストール方法/簡単な使い方は<a href="/blog/20201129185816.html">こちら</a>
+</p>
+<h3>折れ線グラフを作成する</h3>
+<h4>データを準備する</h4>
+<p>
+  sample-line.datというファイル名で保存しました。
 </p>
 <pre>
-8
+1 "2016年" 2850
+2 "2017年" 3240
+3 "2018年" 3540
+4 "2019年" 3630
+5 "2020年" 4980
 </pre>
+<h4>棒グラフを出力を画像として保存する</h4>
 <p>
-  1つ1つ比較していて処理がとてもわかりやすいかと思います。
+  以下のようなファイルをpng_plot-lines.txtとして保存します。
 </p>
 <p>
-  ※コードを単純化するために正の数(>0)のみが含まれる配列を扱います。
-</p>
-<h3>表形式のデータから、特定の列の最大値を求めてみよう。</h3>
-<p>
-  以下のデータを考えてみましょう。
-</p>
-<table> 
-  <thead>
-    <tr><th>name</th><th>age</th></tr>
-  </thead>
-  <tbody>
-    <tr><th>bob</th><th>9</th></tr>
-    <tr><th>tom</th><th>14</th></tr>
-    <tr><th>alice</th><th>11</th></tr>
-  </tbody>
-</table>
-<p>
-  配列,ハッシュのリファレンスで表すと以下のようになります。
+  また、グラフのフォーマットも指定してみました。
 </p>
 <pre>
-$array_ref = [
-  {name =&gt; 'bob',  age =&gt; 9},
-  {name =&gt; 'tom',  age =&gt; 14},
-  {name =&gt; 'alice',age =&gt; 11}
-];
+set terminal png font "Sans,9"
+set output 'test-line.png'
+unset key
+set title '年別の売り上げ額'
+set ylabel '(円)'
+# 以下数値の桁区切り
+set format "%'.0f"
+set decimalsign locale; set decimalsign "."
+
+plot [][0:] 'sample-line.dat' using 1:3:xtic(2) with lines
 </pre>
-<h4>age列の最大値を求めるサンプルプログラム</h4>
 <p>
-  参照するデータが複雑になったためデータアクセスも少し難しくなりましたが、
-</p>
-<p>
-  チェックする方法は先ほどと同じです。
+  以下のコマンドで折れ線グラフを出力します。
 </p>
 <pre>
-use strict;
-use warnings;
-
-my $array_ref = [
-  {name =&gt; 'bob', age =&gt; 9},
-  {name =&gt; 'tom', age =&gt; 14},
-  {name =&gt; 'alice',age =&gt; 11}
-];
-
-my $max = 0;
-
-for my $info (@{$array_ref}) {
-  if ($max &lt; $info-&gt;{'age'}) {
-    $max = $info-&gt;{'age'};
-  }
-}
-
-print "$max\n";
+$ gnuplot png_plot-lines.txt
 </pre>
 <p>
-  実行結果
-</p>
-<pre>
-14
-</pre>
-<p>
-  リファレンスを扱った以外は先ほどと同じ処理になります。
+  目標のような画像"test-line.png"は保存されましたでしょうか？
 </p>
 <p>
-  このプログラムは、コピー＆ペーストして、<a href="https://perlbanjo.com">PerlBanjo</a>で、すぐに試すことができます。
+  plotのオプションを修正することで折れ線グラフ(with lines)にすることができます。
 </p>
 
   </div>
